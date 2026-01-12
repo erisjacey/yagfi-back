@@ -36,3 +36,4 @@ To compare with, look for other similar projects:
 
 # What's next
 - Android app with notifications about new issues by favorite filter preset
+- AI to looking for new labels that might be another custom form of good-first-issue
