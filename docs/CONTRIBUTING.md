@@ -3,7 +3,7 @@
 The YAGFI project welcomes contributions from everyone. There are a number of ways you 
 can help:
 
-## Suppose labels
+## Suggest labels
 Feel free to open an issue with _another one_ custom good-first-issue label with example 
 where it's used.
 
