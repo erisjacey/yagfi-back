@@ -75,8 +75,27 @@ CREATE TABLE IF NOT EXISTS gfi.e_log
     url            TEXT                     NOT NULL,
     http_method    VARCHAR(10)              NOT NULL,
     request_body   JSONB,
-    country        VARCHAR(20),
+    country        VARCHAR(50),
     os             VARCHAR(50),
     browser_family VARCHAR(50),
     device_type    VARCHAR(20)
+);
+
+CREATE TABLE IF NOT EXISTS gfi.e_user_feed_request
+(
+    id       BIGSERIAL PRIMARY KEY,
+    created  TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    nickname VARCHAR(255)             NOT NULL,
+    email    VARCHAR(255)             NOT NULL,
+    status   VARCHAR(50)              NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS gfi.e_user_feed_dependency
+(
+    id             BIGSERIAL PRIMARY KEY,
+    created        TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    request_id     BIGINT                   NOT NULL REFERENCES gfi.e_user_feed_request (id),
+    source_repo    VARCHAR(500)             NOT NULL,
+    dependency_url VARCHAR(500)             NOT NULL,
+    UNIQUE (source_repo, dependency_url)
 );
