@@ -12,7 +12,8 @@ import java.util.function.Supplier;
 
 @Component
 @RequiredArgsConstructor
-public class SbomModelToUserFeedDependencyMapperImpl implements BiFunction<SbomModel, String, UserFeedDependencyEntity> {
+public class SbomModelToUserFeedDependencyMapperImpl
+        implements BiFunction<SbomModel, String, UserFeedDependencyEntity> {
 
     private final Supplier<OffsetDateTime> dateTimeSupplier;
 

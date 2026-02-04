@@ -50,7 +50,8 @@ public class NpmPurlToHomepageServiceImpl implements PurlToHomepageService {
                 return root.get("repository").get("url").asText();
             }
 
-            if (root.has("repository") && root.get("repository").isTextual() && root.get("repository").asText().contains("git")) {
+            if (root.has("repository") && root.get("repository").isTextual()
+                    && root.get("repository").asText().contains("git")) {
                 return root.get("repository").asText();
             }
 

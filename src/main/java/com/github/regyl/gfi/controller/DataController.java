@@ -43,7 +43,10 @@ public class DataController {
     }
 
     @GetMapping("/feed")
-    public UserFeedRequestEntity findCustomFeedByNickname(@RequestParam("nickname") @NotEmpty String nickname, @RequestParam("email") @Email String email) {
+    public UserFeedRequestEntity findCustomFeedByNickname(
+            @RequestParam("nickname") @NotEmpty String nickname,
+            @RequestParam("email") @Email String email
+    ) {
         return userFeedService.saveFeedRequest(new UserFeedRequestDto(nickname, email));
     }
 }

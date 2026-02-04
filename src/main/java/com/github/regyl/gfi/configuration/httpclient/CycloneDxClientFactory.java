@@ -18,6 +18,16 @@ import java.util.concurrent.TimeUnit;
 public class CycloneDxClientFactory {
 
     @Bean
+    public SbomHttpClientResponseHandlerImpl sbomResponseHandler() {
+        return new SbomHttpClientResponseHandlerImpl();
+    }
+
+    @Bean
+    public HealthHttpClientResponseHandlerImpl healthResponseHandler() {
+        return new HealthHttpClientResponseHandlerImpl();
+    }
+
+    @Bean
     public Collection<HttpHost> cycloneDxHosts(CycloneDxConfigurationProperties configProps) {
         String template = "http://127.0.0.1:";
         return configProps.getPorts().stream()

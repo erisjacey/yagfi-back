@@ -1,13 +1,12 @@
 package com.github.regyl.gfi.service.impl.feed.cyclonedx;
 
-import com.github.regyl.gfi.configuration.httpclient.HealthHttpClientResponseHandlerImpl;
-import com.github.regyl.gfi.configuration.httpclient.SbomHttpClientResponseHandlerImpl;
 import com.github.regyl.gfi.controller.dto.cyclonedx.health.HealthResponseDto;
 import com.github.regyl.gfi.controller.dto.cyclonedx.sbom.SbomResponseDto;
 import com.github.regyl.gfi.service.feed.CycloneDxService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.impl.classic.AbstractHttpClientResponseHandler;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.core5.http.HttpHost;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -35,6 +34,8 @@ public class CycloneDxServiceImpl implements CycloneDxService {
     private final CloseableHttpClient cdxgenHealthClient;
     @Qualifier("cdxgenSbomClient")
     private final CloseableHttpClient cdxgenSbomClient;
+    private final AbstractHttpClientResponseHandler<HealthResponseDto> healthResponseHandler;
+    private final AbstractHttpClientResponseHandler<SbomResponseDto> sbomResponseHandler;
 
     @Override
     public int getFreeServiceQuantity() {
@@ -53,7 +54,7 @@ public class CycloneDxServiceImpl implements CycloneDxService {
         HttpGet sbomGet = new HttpGet(SBOM_PATH + url);
         log.info("Using host {} and repository {}", host, url);
         try {
-            SbomResponseDto response = cdxgenSbomClient.execute(host, sbomGet, new SbomHttpClientResponseHandlerImpl());
+            SbomResponseDto response = cdxgenSbomClient.execute(host, sbomGet, sbomResponseHandler);
             return CompletableFuture.completedFuture(response);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -64,7 +65,11 @@ public class CycloneDxServiceImpl implements CycloneDxService {
     public Queue<HttpHost> getFreeHosts() {
         List<HttpHost> freeHosts = cycloneDxHosts.stream().map(host -> {
             try {
-                HealthResponseDto result = cdxgenHealthClient.execute(host, HEALTH_GET, new HealthHttpClientResponseHandlerImpl());
+                HealthResponseDto result = cdxgenHealthClient.execute(
+                        host,
+                        HEALTH_GET,
+                        healthResponseHandler
+                );
                 if ("OK".equals(result.getStatus())) {
                     return host;
                 } else {

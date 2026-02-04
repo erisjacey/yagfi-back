@@ -30,6 +30,21 @@ public class ServicePredicateUtil {
         return targetServices.getFirst();
     }
 
+    public <T extends Predicate> T getTargetService(Collection<T> services, T defaultService, Object t) {
+        List<T> targetServices = services.stream()
+                .filter(service -> service.test(t))
+                .toList();
+        if (targetServices.size() > 1) {
+            log.error("Multiple target services found: {}", targetServices);
+            throw new IllegalArgumentException();
+        }
+
+        if (targetServices.size() == 1) {
+            return targetServices.getFirst();
+        }
+        return defaultService;
+    }
+
     public <T extends Predicate> Optional<T> getTargetServiceNullSafe(Collection<T> services, Object t) {
         List<T> targetServices = services.stream()
                 .filter(service -> service.test(t))
@@ -45,21 +60,5 @@ public class ServicePredicateUtil {
         }
 
         return Optional.of(targetServices.getFirst());
-    }
-
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    public <T extends Predicate> T getTargetService(Collection<T> services, T defaultService, Object t) {
-        List<T> targetServices = services.stream()
-                .filter(service -> service.test(t))
-                .toList();
-        if (targetServices.size() > 1) {
-            log.error("Multiple target services found: {}", targetServices);
-            throw new IllegalArgumentException();
-        }
-
-        if (targetServices.size() == 1) {
-            return targetServices.getFirst();
-        }
-        return defaultService;
     }
 }

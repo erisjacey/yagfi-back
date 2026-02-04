@@ -11,7 +11,7 @@ import java.util.Collection;
 @Component
 public class LabelServiceImpl implements LabelService {
 
-    private final static Collection<LabelModel> DATA;
+    private static final Collection<LabelModel> DATA;
 
     static {
         DATA = Arrays.stream(ResourceUtil.getFilePayload("data/labels.txt").split("\r\n"))

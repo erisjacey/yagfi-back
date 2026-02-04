@@ -53,7 +53,10 @@ public class IssueLoaderServiceImpl implements ScheduledService {
     }
 
     private IssueTables determineTable() {
-        Long countFirst = jdbcTemplate.queryForObject("select count(*) from gfi." + IssueTables.FIRST.getIssueTableName(), Long.class);
+        Long countFirst = jdbcTemplate.queryForObject(
+                "select count(*) from gfi." + IssueTables.FIRST.getIssueTableName(),
+                Long.class
+        );
 
         if (countFirst == null || countFirst == 0) {
             return IssueTables.FIRST;

@@ -15,6 +15,7 @@ public class UserFeedDependencyEntity extends AbstractEntity {
 
     /**
      * ID of the entity below.
+     *
      * @see UserFeedRequestEntity
      */
     private Long requestId;

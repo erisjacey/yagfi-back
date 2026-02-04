@@ -41,7 +41,8 @@ public class DataServiceImpl implements DataService {
 
     @Override
     public void save(IssueDataDto response, IssueTables table) {
-        if (response == null || response.getSearch() == null || CollectionUtils.isEmpty(response.getSearch().getNodes())) {
+        if (response == null || response.getSearch() == null
+                || CollectionUtils.isEmpty(response.getSearch().getNodes())) {
             return;
         }
 

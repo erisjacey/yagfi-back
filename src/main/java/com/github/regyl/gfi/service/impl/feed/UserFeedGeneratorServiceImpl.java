@@ -57,7 +57,9 @@ public class UserFeedGeneratorServiceImpl implements ScheduledService {
             return;
         }
 
-        Optional<UserFeedRequestEntity> optionalRequest = repository.findOldestByStatus(UserFeedRequestStatuses.WAITING_FOR_PROCESS.getValue());
+        Optional<UserFeedRequestEntity> optionalRequest = repository.findOldestByStatus(
+                UserFeedRequestStatuses.WAITING_FOR_PROCESS.getValue()
+        );
         if (optionalRequest.isEmpty()) {
             log.debug("No user feed request found, will try again later");
             return;
@@ -83,8 +85,8 @@ public class UserFeedGeneratorServiceImpl implements ScheduledService {
             while (!hosts.isEmpty() && !userRepos.isEmpty()) {
                 String url = userRepos.poll();
                 HttpHost host = hosts.poll();
-                cycloneDxService.getSbom(url, host)
-                        .whenComplete((dto, throwable) -> resultConsumer.accept(new SbomModel(rq, dto, url), throwable));
+                cycloneDxService.getSbom(url, host).whenComplete((dto, throwable) ->
+                                resultConsumer.accept(new SbomModel(rq, dto, url), throwable));
             }
 
             LockSupport.parkNanos(Duration.ofMinutes(1L).toNanos());
@@ -100,7 +102,8 @@ public class UserFeedGeneratorServiceImpl implements ScheduledService {
         emailService.send(emailModel);
 
         long processTime = Duration.ofNanos(System.nanoTime() - start).toMinutes();
-        log.info("Finished generating feed for nickname {} and took {} minutes (but maybe not everything processed/uploaded yet)", nickname, processTime);
+        log.info("Finished generating feed for nickname {} and took {} minutes "
+                + "(but maybe not everything processed/uploaded yet)", nickname, processTime);
     }
 
     private UserDataGraphQlResponseDto getRepos(String login) {

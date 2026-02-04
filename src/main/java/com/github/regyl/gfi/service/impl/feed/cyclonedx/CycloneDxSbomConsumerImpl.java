@@ -59,7 +59,9 @@ public class CycloneDxSbomConsumerImpl implements Consumer<SbomModel> {
                 continue;
             }
 
-            Optional<PurlToHomepageService> optionalService = ServicePredicateUtil.getTargetServiceNullSafe(homepageServices, purl);
+            Optional<PurlToHomepageService> optionalService = ServicePredicateUtil.getTargetServiceNullSafe(
+                    homepageServices, purl
+            );
             if (optionalService.isEmpty()) {
                 continue;
             }
