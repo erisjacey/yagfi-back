@@ -4,7 +4,7 @@ spring:
     auto-upload:
       enabled: true
     feed-generation:
-      enabled: true
+      enabled: false
     email:
       username: ${EMAIL_USERNAME:test}
       password: ${EMAIL_PASSWORD:test}

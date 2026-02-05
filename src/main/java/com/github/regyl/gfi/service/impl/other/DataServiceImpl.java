@@ -62,7 +62,6 @@ public class DataServiceImpl implements DataService {
                 .map(issue -> issueMapper.apply(repoCollection, issue))
                 .toList();
 
-        log.debug("Issues loaded: {}", issues.size());
         issueRepository.saveAll(issues, table.getIssueTableName());
     }
 
